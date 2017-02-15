@@ -1,0 +1,40 @@
+<!doctype html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	$( document ).ready(function() {
+		console.log( "ready!" );
+		$('#userform').on('submit', function(e){
+    		$.ajax({
+			    type: "POST",
+			    url: "http://localhost:8080/users/add",
+			    data: JSON.stringify({
+			    	firstName: $('#firstName').val(),
+			    	lastName: $('#lastName').val(),
+			    	numOfPets: $('#numOfPets').val()
+			    }),
+			    contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    success: function(data){$('#databox').html("Successfully added user: " + data.firstName)},
+			    failure: function(errMsg) {
+			        alert(errMsg);
+			    }
+			});
+			e.preventDefault();
+		})
+	});
+
+	</script>
+	<title>Our user application</title>
+</head>
+<body>
+	<form id="userform" method="POST" action="http://localhost:8080/users/add">
+		<div><label for="firstName">First name</label><input id="firstName" type="text" name="firstName"></div>
+		<div><label for="lastName">Last name</label><input id="lastName" type="text" name="lastName"></div>
+		<div><label for="numOfPets">Num of pets</label><input id="numOfPets" type="number" name="numOfPets"></div>
+		<input type="submit" name="Lisa kasutaja">
+	</form>
+
+	<p id="databox"></p>
+</body>
+<html>
