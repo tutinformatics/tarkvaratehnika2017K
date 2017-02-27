@@ -5,8 +5,7 @@ configureRouter(config, router) {
 
     config.map([
       { route: ['', 'home'],       name: 'home',       moduleId: 'home/index' },
-      { route: 'people', name: 'people',  moduleId: 'people',   nav: true }
+      { route: 'people', name: 'people',  moduleId: 'people/people',   nav: true }
     ]);
   }
-
 }
