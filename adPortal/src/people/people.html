@@ -1,3 +1,11 @@
 <template>
 	Hei! ${appName} kasutajaid on praegu ${count}
+
+	<form id="userform" submit.delegate="addUser()">
+		<div><label for="firstName">First name</label><input id="firstName" type="text" name="firstName"></div>
+		<div><label for="lastName">Last name</label><input id="lastName" type="text" name="lastName"></div>
+		<div><label for="numOfPets">Num of pets</label><input id="numOfPets" type="number" name="numOfPets"></div>
+		<input type="submit" name="Lisa kasutaja">
+	</form>
+
 </template>
