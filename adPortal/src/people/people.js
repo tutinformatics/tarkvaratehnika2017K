@@ -2,6 +2,8 @@ import {HttpClient, json} from 'aurelia-fetch-client'
 
 export class people{
 
+	userData = {}
+
 	constructor() {
 		this.appName = "adPortal"
 		this.count = 0
@@ -10,15 +12,9 @@ export class people{
 	addUser() {
 		let client = new HttpClient();
 
-		let userData = {
-			"firstName": "MyName",
-			"lastName": "MyLAstName",
-			"numOfPets": 11
-		}
-
 		client.fetch('http://localhost:8080/users/add', {
 			'method': "POST",
-			'body': json(userData)
+			'body': json(this.userData)
 		})
 			.then(response => response.json())
 			.then(data => {
