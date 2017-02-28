@@ -1,5 +1,7 @@
 package ttu.tteh.user;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,8 +13,12 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User addUser(User user) {
+	User addUser(User user) {
 		// here you can do some validations etc before saving the user
 		return userRepository.save(user);
+	}
+
+	List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 }
