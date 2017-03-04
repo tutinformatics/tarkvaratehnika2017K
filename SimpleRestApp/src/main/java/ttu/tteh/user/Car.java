@@ -3,6 +3,7 @@ package ttu.tteh.user;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,6 @@ public class Car {
 	@GeneratedValue
 	long id;
 	String name;
+	@OneToOne()
+	User user;
 }

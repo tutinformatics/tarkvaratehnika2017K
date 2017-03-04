@@ -19,6 +19,7 @@ public class User {
 	String firstName;
 	String lastName;
 	int numOfPets;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="user",  // välja nimi Car klassis
+			cascade=CascadeType.ALL)
 	Car car;
 }
