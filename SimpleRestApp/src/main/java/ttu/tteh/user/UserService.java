@@ -15,6 +15,7 @@ public class UserService {
 
 	User addUser(User user) {
 		// here you can do some validations etc before saving the user
+		user.setCar(new Car());
 		return userRepository.save(user);
 	}
 
