@@ -8,6 +8,7 @@ import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
+import ttu.tteh.car.Car;
 
 @Entity
 @Getter

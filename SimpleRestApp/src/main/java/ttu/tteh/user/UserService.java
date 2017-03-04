@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import ttu.tteh.car.Car;
+
 @Service
 public class UserService {
 	
