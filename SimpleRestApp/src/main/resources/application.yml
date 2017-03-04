@@ -3,3 +3,6 @@ spring:
       url: jdbc:mariadb://localhost/myapp
       username: myapp
       password: demo
+   jpa:
+      hibernate:
+         ddl-auto: update
