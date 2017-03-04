@@ -1,5 +1,6 @@
 package ttu.tteh.user;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +19,6 @@ public class User {
 	String firstName;
 	String lastName;
 	int numOfPets;
-	@OneToOne()
+	@OneToOne(cascade=CascadeType.ALL)
 	Car car;
 }
