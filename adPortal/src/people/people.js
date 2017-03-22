@@ -1,4 +1,5 @@
 import {HttpClient, json} from 'aurelia-fetch-client'
+import environment from '../environment'
 
 export class people{
 
@@ -7,13 +8,13 @@ export class people{
 
 	constructor() {
 		this.appName = "adPortal"
-		this.count = 0
+		this.count = 0	
 	}
 
 	activate() {
 		let client = new HttpClient();
 
-		client.fetch('http://localhost:8080/users')
+		client.fetch(environment.apiUrl + 'users')
 			.then(response => response.json())
 			.then(users => this.userList = users);
 	}
@@ -21,13 +22,14 @@ export class people{
 	addUser() {
 		let client = new HttpClient();
 
-		client.fetch('http://localhost:8080/users/add', {
+		client.fetch(environment.apiUrl + 'users/add', {
 			'method': "POST",
 			'body': json(this.userData)
 		})
 			.then(response => response.json())
 			.then(data => {
 				console.log("Server saatis " + data.firstName);
+				this.userList.push(data)
 		});
 
 		console.log("Method executed!")
