@@ -1,6 +1,21 @@
+import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
+import {FetchConfig} from 'aurelia-auth';
+
+@inject(Router,FetchConfig, AppRouterConfig)
 export class App {
-configureRouter(config, router) {
+
+  constructor(router, fetchConfig, appRouterConfig){
     this.router = router;
+    this.fetchConfig = fetchConfig;
+  }
+
+  activate(){
+    this.configureRouter(this.appRouterConfig, this.router)
+    this.fetchConfig.configure();
+  }
+
+configureRouter(config, router) {
     config.title = 'My Aurelia äpp';
 
     config.map([
