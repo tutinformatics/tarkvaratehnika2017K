@@ -34,4 +34,8 @@ dependencies {
 	runtime('org.springframework.boot:spring-boot-devtools')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	// https://mvnrepository.com/artifact/com.h2database/h2
+		compile group: 'com.h2database', name: 'h2', version: '1.4.195'
+	
 }

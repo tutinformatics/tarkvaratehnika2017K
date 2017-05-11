@@ -1,8 +1,8 @@
 spring:
-   datasource:
-      url: jdbc:mariadb://localhost/myapp
-      username: myapp
-      password: demo
    jpa:
       hibernate:
          ddl-auto: update
+management:
+  port: 9002
+  security:
+    enabled: false
