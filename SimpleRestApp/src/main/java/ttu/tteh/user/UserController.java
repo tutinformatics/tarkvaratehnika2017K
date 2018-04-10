@@ -32,4 +32,10 @@ public class UserController {
 	public User getUser(@PathVariable("id") long userId) {
 		return userService.getUserById(userId);
 	}
+	
+	@RequestMapping(value = "/users/search/{searchStr}", method=RequestMethod.GET)
+	public List<User> searchUsers(@PathVariable("searchStr") String searchStr) {
+		return userService.searchUsersByLastName(searchStr);
+	}
+	
 }

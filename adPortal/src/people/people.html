@@ -10,6 +10,9 @@
 
 	<p>
 		<h3>Kasutajad</h3>
+		<form id="searchForm" submit.delegate="searchUser()">
+			<input type="text" name="lastNameFilter" id="lastNameFilter" value.bind="searchStr" /> <input type="submit" name="search" id="search" value="Otsi" />
+		</form>
 		<ul>
 			<li repeat.for="user of userList">${user.firstName} ${user.lastName}</li>
 		</ul>
