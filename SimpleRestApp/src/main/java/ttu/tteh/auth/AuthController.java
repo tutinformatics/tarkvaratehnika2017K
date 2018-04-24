@@ -6,20 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ttu.tteh.user.UserService;
-
 @RestController
 public class AuthController {
 	
-	UserService userService;
-	
-	public AuthController(UserService userService) {
-		this.userService = userService;
+	private AuthService authService;
+
+	public AuthController(AuthService authService) {
+		this.authService = authService;
 	}
 
 	@RequestMapping(value ="/auth/{provider}", method=RequestMethod.POST, 
 		consumes = "application/json")
 	public String authenticate(@PathVariable("provider") String provider, @RequestBody AuthRequest request) {
+		
+		authService.authenticate(request);
+		
 		return "Debug to see if it works" + request.getClientId();
 	}
 }
