@@ -10,10 +10,7 @@ export class Home {
     };
 
     authenticate(provider){
-    	let url = "http://localhost:9000/login";
-    	console.log(url)
-    	console.log(provider)
-        return this.auth.authenticate(provider, url)
+        return this.auth.authenticate(provider)
         .then((response)=>{
             console.log("auth response " + response);
         });
