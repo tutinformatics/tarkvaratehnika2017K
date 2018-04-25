@@ -1,5 +1,8 @@
 package ttu.tteh.auth;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,7 @@ public class AuthController {
 
 	@RequestMapping(value ="/auth/{provider}", method=RequestMethod.POST, 
 		consumes = "application/json")
-	public String authenticate(@PathVariable("provider") String provider, @RequestBody AuthRequest request) {
+	public String authenticate(@PathVariable("provider") String provider, @RequestBody AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
 		
 		authService.authenticate(request);
 		
