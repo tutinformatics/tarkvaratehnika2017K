@@ -46,9 +46,19 @@ public class AuthService {
 			
 			GoogleIdToken gid = tokenResponse.parseIdToken();
 			
+			// check if the token is authentic
+			if(!new GoogleIdTokenVerifier(new NetHttpTransport(), JacksonFactory.getDefaultInstance()).verify(gid)) {
+				throw new IllegalAccessError("False token, verification failed!");
+			}
+			
 			// Payload means data on board the JWT
 			Payload payload = gid.getPayload();
 			
+			// we might also accept only tokens where email is verified
+			if(!(boolean)payload.get("email_verified")) {
+				throw new IllegalAccessError("Please verify your Google email first!");
+			}
+				
 			System.out.println(payload.getSubject());
 			
 			System.out.println(payload.get("name"));
