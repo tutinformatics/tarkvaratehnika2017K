@@ -16,8 +16,22 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 
+import ttu.tteh.user.User;
+import ttu.tteh.user.UserService;
+
 @Service
 public class AuthService {
+
+	private static final int TOKEN_LIFETIME = 6000;
+
+	private TokenService tokenService;
+
+	private UserService userService;
+	
+	public AuthService(TokenService tokenService, UserService userService) {
+		this.tokenService = tokenService;
+		this.userService = userService;
+	}
 	
 	private static final String FRONTEND_URL = "http://localhost:9000";
 
@@ -26,7 +40,7 @@ public class AuthService {
 	// do not add google api json data to repository! security risk!
 	final String CLIENT_SECRET_FILE = "/home/martin/Documents/google_cs.json";
 
-	public void authenticate(AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
+	public String authenticate(AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
 		
 			GoogleTokenResponse tokenResponse = exchangeAuthCodeForToken(request);
 			
@@ -37,12 +51,11 @@ public class AuthService {
 			
 			verifyToken(gid, payload);
 				
-			System.out.println(payload.getSubject());
+			String email = (String) payload.get("email");
 			
-			System.out.println(payload.get("name"));
-			System.out.println(payload.get("email"));
-			System.out.println(payload);
-
+			User user = userService.getOrCreateUserByEmail(email);
+			
+			return tokenService.generateToken(user.getId(), TOKEN_LIFETIME);
 	}
 
 	private void verifyToken(GoogleIdToken gid, Payload payload)

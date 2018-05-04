@@ -22,8 +22,6 @@ public class AuthController {
 		consumes = "application/json")
 	public String authenticate(@PathVariable("provider") String provider, @RequestBody AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
 		
-		authService.authenticate(request);
-		
-		return "Debug to see if it works" + request.getClientId();
+		return authService.authenticate(request);
 	}
 }
