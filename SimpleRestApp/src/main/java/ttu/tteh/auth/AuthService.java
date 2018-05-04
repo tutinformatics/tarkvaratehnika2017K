@@ -40,7 +40,7 @@ public class AuthService {
 	// do not add google api json data to repository! security risk!
 	final String CLIENT_SECRET_FILE = "/home/martin/Documents/google_cs.json";
 
-	public String authenticate(AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
+	public AuthResponse authenticate(AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
 		
 			GoogleTokenResponse tokenResponse = exchangeAuthCodeForToken(request);
 			
@@ -55,7 +55,9 @@ public class AuthService {
 			
 			User user = userService.getOrCreateUserByEmail(email);
 			
-			return tokenService.generateToken(user.getId(), TOKEN_LIFETIME);
+			String token = tokenService.generateToken(user.getId(), TOKEN_LIFETIME);
+			
+			return new AuthResponse(token);
 	}
 
 	private void verifyToken(GoogleIdToken gid, Payload payload)
