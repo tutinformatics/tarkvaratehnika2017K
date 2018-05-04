@@ -1,6 +1,7 @@
 package ttu.tteh.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,4 +21,5 @@ public interface UserRepository extends CrudRepository<User, Long>{
 			+ " GROUP BY U")
 	public List<User> findAllByPenColor(@Param("color") String color);
 	
+	public Optional<User> findByEmail(String email);
 }
