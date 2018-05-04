@@ -6,7 +6,12 @@ export class Home {
 
     constructor(auth){
         this.auth = auth;
-        this.message = "Just checking..."
+        this.message = "Just checking... "
+        if (auth.isAuthenticated()) {
+        	this.message += "logitud!"
+        } else {
+        	this.message += "logimata!"
+        }
     };
 
     authenticate(provider){
