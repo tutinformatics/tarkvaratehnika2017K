@@ -32,4 +32,14 @@ public class UserService {
 	List<User> searchUsersByLastName(String searchStr) {
 		return userRepository.findByLastName(searchStr);
 	}
+	
+	public User getOrCreateUserByEmail(String email) {
+		return userRepository.findByEmail(email).orElse(this.addUserByEmail(email));
+	}
+	
+	private User addUserByEmail(String email) {
+		User user = new User();
+		user.setEmail(email);
+		return this.addUser(user);
+	}
 }
