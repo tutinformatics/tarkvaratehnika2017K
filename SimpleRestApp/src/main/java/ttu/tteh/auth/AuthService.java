@@ -1,5 +1,6 @@
 package ttu.tteh.auth;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -18,46 +19,23 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 @Service
 public class AuthService {
 	
+	private static final String FRONTEND_URL = "http://localhost:9000";
+
+	private static final String GOOGLE_API_URL = "https://www.googleapis.com/oauth2/v4/token";
+	
 	// do not add google api json data to repository! security risk!
 	final String CLIENT_SECRET_FILE = "/home/martin/Documents/google_cs.json";
 
 	public void authenticate(AuthRequest request) throws IllegalAccessError, GeneralSecurityException, IOException {
 		
-			// Load connection data from json file
-			GoogleClientSecrets clientSecrets =
-					GoogleClientSecrets.load(
-							JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
-
-			// Exchange auth code for access token
-			GoogleTokenResponse tokenResponse =
-					new GoogleAuthorizationCodeTokenRequest(
-							new NetHttpTransport(),
-							JacksonFactory.getDefaultInstance(),
-							"https://www.googleapis.com/oauth2/v4/token",
-							clientSecrets.getDetails().getClientId(),
-							clientSecrets.getDetails().getClientSecret(),
-							request.getCode(),
-							"http://localhost:9000")  // Specify the same redirect URI that you use with your web
-														// app. If you don't have a web version of your app, you can
-														// specify an empty string.
-					.execute();
-			
-			String token = tokenResponse.getAccessToken();
+			GoogleTokenResponse tokenResponse = exchangeAuthCodeForToken(request);
 			
 			GoogleIdToken gid = tokenResponse.parseIdToken();
-			
-			// check if the token is authentic
-			if(!new GoogleIdTokenVerifier(new NetHttpTransport(), JacksonFactory.getDefaultInstance()).verify(gid)) {
-				throw new IllegalAccessError("False token, verification failed!");
-			}
 			
 			// Payload means data on board the JWT
 			Payload payload = gid.getPayload();
 			
-			// we might also accept only tokens where email is verified
-			if(!(boolean)payload.get("email_verified")) {
-				throw new IllegalAccessError("Please verify your Google email first!");
-			}
+			verifyToken(gid, payload);
 				
 			System.out.println(payload.getSubject());
 			
@@ -65,5 +43,42 @@ public class AuthService {
 			System.out.println(payload.get("email"));
 			System.out.println(payload);
 
+	}
+
+	private void verifyToken(GoogleIdToken gid, Payload payload)
+			throws GeneralSecurityException, IOException, IllegalAccessError {
+		// check if the token is authentic
+		if(!new GoogleIdTokenVerifier(new NetHttpTransport(), JacksonFactory.getDefaultInstance()).verify(gid)) {
+			throw new IllegalAccessError("False token, verification failed!");
+		}
+		// we might also accept only tokens where email is verified
+		if(!(boolean)payload.get("email_verified")) {
+			throw new IllegalAccessError("Please verify your Google email first!");
+		}
+	}
+
+	private GoogleTokenResponse exchangeAuthCodeForToken(AuthRequest request)
+			throws IOException, FileNotFoundException {
+		// Load connection data from json file
+		GoogleClientSecrets clientSecrets =
+				GoogleClientSecrets.load(
+						JacksonFactory.getDefaultInstance(), new FileReader(CLIENT_SECRET_FILE));
+
+		// Exchange auth code for access token
+		GoogleTokenResponse tokenResponse =
+				new GoogleAuthorizationCodeTokenRequest(
+						new NetHttpTransport(),
+						JacksonFactory.getDefaultInstance(),
+						GOOGLE_API_URL,
+						clientSecrets.getDetails().getClientId(),
+						clientSecrets.getDetails().getClientSecret(),
+						request.getCode(),
+						FRONTEND_URL)  // Specify the same redirect URI that you use with your web
+													// app. If you don't have a web version of your app, you can
+													// specify an empty string.
+				.execute();
+		
+		String token = tokenResponse.getAccessToken();
+		return tokenResponse;
 	}
 }
