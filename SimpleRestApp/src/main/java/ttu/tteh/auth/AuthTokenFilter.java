@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-public class AuthTokenFilter extends GenericFilterBean{
+public class AuthTokenFilter extends OncePerRequestFilter{
 
 	private TokenService tokenService;
 	
@@ -19,10 +19,17 @@ public class AuthTokenFilter extends GenericFilterBean{
 		this.tokenService = tokenService;
 	}
 	
-	@Override
+	/*@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		
+	}*/
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 		System.out.println("Filtering stuff...........");
-		chain.doFilter(request, response);
+		filterChain.doFilter(request, response);
+		
 	}
 }
