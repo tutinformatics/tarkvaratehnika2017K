@@ -1,28 +1,28 @@
+import {inject} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client'
 
+@inject(HttpClient)
 export class people{
 
 	userData = {}
 	userList = []
 	searchStr = ""
 
-	constructor() {
+	constructor(http) {
 		this.appName = "adPortal"
 		this.count = 0
+		this.http = http
 	}
 
 	activate() {
-		let client = new HttpClient();
-
-		client.fetch('http://localhost:8080/users')
+		this.http.fetch('http://localhost:8080/users')
 			.then(response => response.json())
 			.then(users => this.userList = users);
 	}
 
 	addUser() {
-		let client = new HttpClient();
 
-		client.fetch('http://localhost:8080/users/add', {
+		this.http.fetch('http://localhost:8080/users/add', {
 			'method': "POST",
 			'body': json(this.userData)
 		})
@@ -36,9 +36,8 @@ export class people{
 	}
 
 	searchUser() {
-		let client = new HttpClient();
 
-		client.fetch('http://localhost:8080/users/search/' + this.searchStr)
+		this.http.fetch('http://localhost:8080/users/search/' + this.searchStr)
 			.then(response => response.json())
 			.then(users => this.userList = users);
 	}
