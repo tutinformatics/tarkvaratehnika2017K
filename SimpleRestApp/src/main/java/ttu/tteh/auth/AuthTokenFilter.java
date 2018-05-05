@@ -26,15 +26,12 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 		
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String authToken = httpRequest.getHeader(this.tokenHeaderName);
-		System.out.println("Looking for token");
 		if (authToken != null) {
 			Optional<Long> userId = tokenService.getUserIdFromToken(authToken);
-			System.out.println("Hmz... inside token validation");
             if (userId.isPresent()) {
-                System.out.println("USER ID FOUND!" + userId.get());
+               
             }
 		}
-		System.out.println("filter chain...");
 		filterChain.doFilter(request, response);
 	}
 }
