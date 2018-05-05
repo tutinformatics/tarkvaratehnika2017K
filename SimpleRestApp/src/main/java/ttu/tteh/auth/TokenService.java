@@ -1,6 +1,7 @@
 package ttu.tteh.auth;
 
 import java.util.Date;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 @Service
@@ -32,5 +34,23 @@ public class TokenService {
 				.signWith(SignatureAlgorithm.HS256, JWTS_KEY)
 				.compact();
 		return jsonWebToken;
+	}
+	
+	public Optional<Long> getUserIdFromToken(String authToken) throws SignatureException{
+		try {
+			return Optional.of(Long.valueOf(Jwts.parser()
+					.setSigningKey(JWTS_KEY)
+					.parseClaimsJws(authToken)
+					.getBody()
+					.getSubject()));
+		} catch (SignatureException e) {
+			// token validation failed, no valid user information
+			System.out.println(e.getMessage());
+			return Optional.empty();
+		}
+	}
+	
+	public String removeBearerPrefix(String token) {
+		return token.substring(7);
 	}
 }
