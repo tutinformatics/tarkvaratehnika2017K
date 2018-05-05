@@ -34,7 +34,7 @@ public class UserService {
 	}
 	
 	public User getOrCreateUserByEmail(String email) {
-		return userRepository.findByEmail(email).orElse(this.addUserByEmail(email));
+		return userRepository.findByEmail(email).orElseGet(() -> this.addUserByEmail(email));
 	}
 	
 	private User addUserByEmail(String email) {
