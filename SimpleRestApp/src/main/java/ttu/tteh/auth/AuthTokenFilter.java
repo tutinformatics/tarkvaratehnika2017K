@@ -1,6 +1,7 @@
 package ttu.tteh.auth;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,18 +19,24 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 	public AuthTokenFilter(TokenService tokenService) {
 		this.tokenService = tokenService;
 	}
-	
-	/*@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		
-	}*/
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("Filtering stuff...........");
-		filterChain.doFilter(request, response);
 		
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		String authToken = httpRequest.getHeader(this.tokenHeaderName);
+		System.out.println("Looking for token");
+		if (authToken != null) {
+			authToken = tokenService.removeBearerPrefix(authToken);
+			
+			Optional<Long> userId = tokenService.getUserIdFromToken(authToken);
+			System.out.println("Hmz... inside token validation");
+            if (userId.isPresent()) {
+                System.out.println("USER ID FOUND!" + userId.get());
+            }
+		}
+		System.out.println("filter chain...");
+		filterChain.doFilter(request, response);
 	}
 }
