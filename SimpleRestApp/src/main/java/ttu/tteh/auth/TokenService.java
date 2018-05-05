@@ -37,6 +37,7 @@ public class TokenService {
 	}
 	
 	public Optional<Long> getUserIdFromToken(String authToken) throws SignatureException{
+		authToken = removeBearerPrefix(authToken);
 		try {
 			return Optional.of(Long.valueOf(Jwts.parser()
 					.setSigningKey(JWTS_KEY)
@@ -45,12 +46,12 @@ public class TokenService {
 					.getSubject()));
 		} catch (SignatureException e) {
 			// token validation failed, no valid user information
-			System.out.println(e.getMessage());
+			System.out.println();
 			return Optional.empty();
 		}
 	}
 	
-	public String removeBearerPrefix(String token) {
+	private String removeBearerPrefix(String token) {
 		return token.substring(7);
 	}
 }

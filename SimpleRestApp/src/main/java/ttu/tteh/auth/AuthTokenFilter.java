@@ -28,8 +28,6 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 		String authToken = httpRequest.getHeader(this.tokenHeaderName);
 		System.out.println("Looking for token");
 		if (authToken != null) {
-			authToken = tokenService.removeBearerPrefix(authToken);
-			
 			Optional<Long> userId = tokenService.getUserIdFromToken(authToken);
 			System.out.println("Hmz... inside token validation");
             if (userId.isPresent()) {
