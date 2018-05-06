@@ -29,19 +29,19 @@ import ttu.tteh.pen.Pen;
 public class User implements UserDetails{
 	@Id
 	@GeneratedValue
-	long id;
-	String firstName;
-	String lastName;
-	int numOfPets;
+	private long id;
+	private String firstName;
+	private String lastName;
+	private int numOfPets;
 	@Column(unique=true)
-	String email;
+	private String email;
 	
 	@OneToOne(mappedBy="user",  // välja nimi Car klassis
 			cascade=CascadeType.ALL)
-	Car car;
+	private Car car;
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
-	List<Pen> pens;
+	private List<Pen> pens;
 
 	@Transient
 	@JsonIgnore
