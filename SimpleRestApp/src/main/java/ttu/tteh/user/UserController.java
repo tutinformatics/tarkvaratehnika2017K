@@ -1,5 +1,6 @@
 package ttu.tteh.user;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import ttu.tteh.auth.AuthenticationData;
 
 @RestController
 public class UserController {
@@ -36,6 +39,19 @@ public class UserController {
 	@RequestMapping(value = "/users/search/{searchStr}", method=RequestMethod.GET)
 	public List<User> searchUsers(@PathVariable("searchStr") String searchStr) {
 		return userService.searchUsersByLastName(searchStr);
+	}
+	
+	@RequestMapping(value = "/auth/me", method = RequestMethod.GET)
+	public User getLoggedUser(Principal principal) {
+		AuthenticationData auth = (AuthenticationData) principal;
+		User user = (User) auth.getPrincipal();
+		
+		User returnUser = new User();
+		returnUser.setEmail(user.getEmail());
+		returnUser.setFirstName(user.getFirstName());
+		returnUser.setLastName(user.getLastName());
+		
+		return returnUser;
 	}
 	
 }
