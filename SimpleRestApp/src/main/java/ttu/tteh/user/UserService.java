@@ -28,6 +28,18 @@ public class UserService {
 	public User getUserById(long userId) {
 		return userRepository.findOne(userId);
 	}
+	
+	public User getCopyOfUserById(long userId) {
+		User user = getUserById(userId);
+		
+		User returnUser = new User();
+		returnUser.setEmail(user.getEmail());
+		returnUser.setFirstName(user.getFirstName());
+		returnUser.setLastName(user.getLastName());
+		returnUser.setCar(user.getCar());
+		
+		return returnUser;
+	}
 
 	List<User> searchUsersByLastName(String searchStr) {
 		return userRepository.findByLastName(searchStr);

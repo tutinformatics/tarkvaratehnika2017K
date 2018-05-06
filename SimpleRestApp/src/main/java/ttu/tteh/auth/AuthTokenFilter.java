@@ -37,7 +37,7 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 		if (authToken != null) {
 			Optional<Long> userId = tokenService.getUserIdFromToken(authToken);
             if (userId.isPresent()) {
-            	UserDetails userDetails = userService.getUserById(userId.get());
+            	UserDetails userDetails = userService.getCopyOfUserById(userId.get());
             	Authentication auth = new AuthenticationData(null, userDetails);
             	SecurityContextHolder.getContext().setAuthentication(auth);
             }

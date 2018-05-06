@@ -46,12 +46,7 @@ public class UserController {
 		AuthenticationData auth = (AuthenticationData) principal;
 		User user = (User) auth.getPrincipal();
 		
-		User returnUser = new User();
-		returnUser.setEmail(user.getEmail());
-		returnUser.setFirstName(user.getFirstName());
-		returnUser.setLastName(user.getLastName());
-		
-		return returnUser;
+		return user;
 	}
 	
 }
