@@ -10,20 +10,23 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import ttu.tteh.auth.AuthTokenFilter;
 import ttu.tteh.auth.TokenService;
+import ttu.tteh.user.UserService;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private TokenService tokenService;
+	private UserService userService;
 	
-	public SecurityConfig(TokenService tokenService) {
+	public SecurityConfig(TokenService tokenService, UserService userService) {
 		this.tokenService = tokenService;
+		this.userService = userService;
 	}
 	
     @Bean
     public AuthTokenFilter authTokenFilterBean() throws Exception {
-        AuthTokenFilter authenticationTokenFilter = new AuthTokenFilter(tokenService);
+        AuthTokenFilter authenticationTokenFilter = new AuthTokenFilter(tokenService, userService);
         return authenticationTokenFilter;
     }
     

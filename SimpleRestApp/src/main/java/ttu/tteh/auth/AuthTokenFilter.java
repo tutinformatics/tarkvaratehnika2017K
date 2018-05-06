@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import ttu.tteh.user.UserService;
 
 public class AuthTokenFilter extends OncePerRequestFilter{
 
@@ -18,8 +21,11 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 	
 	private String tokenHeaderName = "authorization";
 
-	public AuthTokenFilter(TokenService tokenService) {
+	private UserService userService;
+
+	public AuthTokenFilter(TokenService tokenService, UserService userService) {
 		this.tokenService = tokenService;
+		this.userService = userService;
 	}
 
 	@Override
@@ -31,8 +37,9 @@ public class AuthTokenFilter extends OncePerRequestFilter{
 		if (authToken != null) {
 			Optional<Long> userId = tokenService.getUserIdFromToken(authToken);
             if (userId.isPresent()) {
-            	Authentication auth = new AuthenticationData(null);
-            	SecurityContextHolder.getContext().setAuthentication(null);
+            	UserDetails userDetails = userService.getUserById(userId.get());
+            	Authentication auth = new AuthenticationData(null, userDetails);
+            	SecurityContextHolder.getContext().setAuthentication(auth);
             }
 		}
 		filterChain.doFilter(request, response);
