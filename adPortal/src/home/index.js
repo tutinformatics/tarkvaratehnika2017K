@@ -8,7 +8,10 @@ export class Home {
         this.auth = auth;
         this.message = "Just checking... "
         if (auth.isAuthenticated()) {
-        	this.message += "logitud!"
+        	auth.getMe().then(
+        		user => this.message += user['email'] + " on sisse logitud!"
+        		)
+        	
         } else {
         	this.message += "logimata!"
         }

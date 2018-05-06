@@ -1,5 +1,5 @@
 var configForDevelopment = {
-    
+    profileUrl: 'http://localhost:8080/auth/me',
     providers: {
         google: {
             clientId: '93685841879-p0qhjbe4irgsgcv2v5dujl148dujd9u4.apps.googleusercontent.com',
@@ -9,6 +9,7 @@ var configForDevelopment = {
 };
 
 var configForProduction = {
+    profileUrl: 'http://localhost:8080/auth/me',
     providers: {
         google: {
             clientId: '93685841879-p0qhjbe4irgsgcv2v5dujl148dujd9u4.apps.googleusercontent.com',
